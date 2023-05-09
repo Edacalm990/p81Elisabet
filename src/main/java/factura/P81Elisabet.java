@@ -8,6 +8,7 @@ package factura;
 import BBDD.Conexion;
 import BBDD.CreaBBDD;
 import java.sql.Connection;
+import java.time.LocalDate;
 
 /**
  *
@@ -17,5 +18,17 @@ public class P81Elisabet {
 
     public static void main(String[] args) {
         CreaBBDD nuevaBBDD = new CreaBBDD();
+        FacturaDAO facturas = new FacturaDAO();
+        FacturaVO factura = new FacturaVO();
+        factura.setCodigoUnico(12343);
+        factura.setDescripcion("kjhklhklhlk");
+        factura.setFechaEmision(LocalDate.now());
+        factura.setTotalImporte(12.34);
+        facturas.insertFactura(factura);
+        try {
+            facturas.getAll();
+        } catch (Exception e) {
+        }
+        
     }
 }

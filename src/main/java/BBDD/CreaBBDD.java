@@ -46,7 +46,7 @@ public class CreaBBDD {
             drop.execute();
             PreparedStatement  stmt = con.prepareStatement("""
                                         CREATE TABLE `factura` (
-                                          `codigoUnico` int4(5) NOT NULL,
+                                          `codigoUnico` int4(5) Not  NULL,
                                           `fechaEmision` datetime  DEFAULT NULL,
                                           `descripcion`  varchar(45) DEFAULT NULL,
                                           `totalImporte` decimal(12,2) default 0, 
