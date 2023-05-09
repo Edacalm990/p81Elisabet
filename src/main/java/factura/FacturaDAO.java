@@ -50,38 +50,63 @@ public class FacturaDAO implements IFactura {
                 listaFacturas.add(f);
             }
         }
-        listaFacturas.forEach(System.out::println);
         return listaFacturas;
     }
 
     @Override
-    public FacturaVO findByPk(int pk) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public FacturaVO findByPk(int codigoUnico) {
+        String sql = "select * from factura where codigoUnico=?";
+        FacturaVO factura = new FacturaVO();
+        ResultSet res = null;
+        try ( PreparedStatement prest = con.prepareStatement(sql)) {
+            prest.setInt(1, codigoUnico);
+            res = prest.executeQuery();
+            // Nos posicionamos en el primer registro del Resultset. Sólo debe haber una fila
+            // si existe esa pk
+            if (res.next()) {
+                // Recogemos los datos de la persona, guardamos en un objeto
+                factura.setCodigoUnico(res.getInt("codigoUnico"));
+                factura.setDescripcion(res.getString("descripcion"));
+                factura.setFechaEmision(res.getDate("fechaEmision").toLocalDate());
+                factura.setTotalImporte(res.getDouble("totalImporte"));
+                return factura;
+            }
+        } catch (Exception e) {
+            System.out.println(e + " Error al buscar");
+            return null;
+        }
+        return null;
     }
 
     @Override
     public int insertFactura(FacturaVO factura) {
         int numFilas = 0;
-        try {
+        if (findByPk(factura.getCodigoUnico()) != null) {
+            System.out.println("No se ha podido hacer la inserción porque la factura ya existe");
+            return -1;
+        } else {
+            try {
 
-            String sql = "insert into factura (codigoUnico, descripcion, fechaEmision, totalImporte) values (?,?,?,?)";
+                String sql = "insert into factura (codigoUnico, descripcion, fechaEmision, totalImporte) values (?,?,?,?)";
 
-            // Instanciamos el objeto PreparedStatement para inserción
-            // de datos. Sentencia parametrizada
-            try ( PreparedStatement prest = con.prepareStatement(sql)) {
+                // Instanciamos el objeto PreparedStatement para inserción
+                // de datos. Sentencia parametrizada
+                try ( PreparedStatement prest = con.prepareStatement(sql)) {
 
-                // Establecemos los parámetros de la sentencia
-                prest.setInt(1, factura.getCodigoUnico());
-                prest.setString(2, factura.getDescripcion());
-                prest.setDate(3, Date.valueOf(factura.getFechaEmision()));
-                prest.setDouble(4, (double)Math.round(factura.getTotalImporte() * 100d) / 100d);
-                numFilas = prest.executeUpdate();
+                    // Establecemos los parámetros de la sentencia
+                    prest.setInt(1, factura.getCodigoUnico());
+                    prest.setString(2, factura.getDescripcion());
+                    prest.setDate(3, Date.valueOf(factura.getFechaEmision()));
+                    prest.setDouble(4, (double) Math.round(factura.getTotalImporte() * 100d) / 100d);
+                    numFilas = prest.executeUpdate();
 
-                return numFilas;
+                    return numFilas;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al introcudir la factura" + e);
             }
-        } catch (Exception e) {
-            System.out.println("Error al introcudir la factura" + e);
         }
+
         return numFilas;
     }
 
@@ -96,20 +121,36 @@ public class FacturaDAO implements IFactura {
 
     @Override
     public int deleteFactura(FacturaVO p) throws SQLException {
-        try {
-            String sql ="select * from factura where codigoUnico=?";
-             try ( PreparedStatement prest = con.prepareStatement(sql)) {
-                prest.setInt(1, p.getCodigoUnico());
-                return p.getCodigoUnico();
-            }
-        } catch (Exception e) {
+        int numFilas = 0;
+
+        String sql = "delete from factura where codigoUnico=?";
+
+        // Sentencia parametrizada
+        try (PreparedStatement prest = con.prepareStatement(sql)) {
+
+            // Establecemos los parámetros de la sentencia
+            prest.setInt(1, p.getCodigoUnico());
+            // Ejecutamos la sentencia
+            numFilas = prest.executeUpdate();
         }
-        return 1;
+        return numFilas;
     }
 
     @Override
     public int deleteFactura() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "delete from factura";
+
+        int nfilas = 0;
+
+        // Preparamos el borrado de datos  mediante un Statement
+        // No hay parámetros en la sentencia SQL
+        try ( Statement st = con.createStatement()) {
+            // Ejecución de la sentencia
+            nfilas = st.executeUpdate(sql);
+        }
+
+        // El borrado se realizó con éxito, devolvemos filas afectadas
+        return nfilas;
     }
 
     @Override

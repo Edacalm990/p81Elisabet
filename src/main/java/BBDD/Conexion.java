@@ -3,17 +3,18 @@ package BBDD;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//    private static final String SERVIDOR = "jdbc:mysql://192.168.56.101:3306/";
-//    private static  String NOMBRE_BASE_DATOS = "mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
-//    private static final String USER = "elisabet";
-//    private static final String PASS = "5989fecha";
+
 
 public class Conexion {
-    
-    private static final String SERVIDOR = "jdbc:mysql://localhost:3306/";
+    private static final String SERVIDOR = "jdbc:mysql://192.168.56.101:3306/";
     private static  String NOMBRE_BASE_DATOS = "mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
-    private static final String USER = "root";
-    private static final String PASS = "5989fecha!";
+    private static final String USER = "elisabet";
+    private static final String PASS = "5989fecha";
+//    
+//    private static final String SERVIDOR = "jdbc:mysql://localhost:3306/";
+//    private static  String NOMBRE_BASE_DATOS = "mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
+//    private static final String USER = "root";
+//    private static final String PASS = "5989fecha!";
 
     private static Connection instancia = null;
     
