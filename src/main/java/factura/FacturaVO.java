@@ -10,6 +10,7 @@ import java.time.LocalDate;
  *
  * @author eli
  */
+// clase POJO
 public class FacturaVO {
     private int codigoUnico;
     private LocalDate fechaEmision;

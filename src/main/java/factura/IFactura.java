@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author eli
  */
+// interfaz de factura con todos los métodos necesarios para que la aplicación funcione correctamente
 public interface IFactura {
         // Método para obtener todos los registros de la tabla
     List<FacturaVO> getAll() throws SQLException;
@@ -19,18 +20,18 @@ public interface IFactura {
     FacturaVO findByPk(int pk) throws SQLException;
     
     // Método para insertar un registro
-    int insertFactura (FacturaVO factura) throws SQLException;
+    FacturaVO insertFactura (FacturaVO factura) throws SQLException;
     
     // Método para insertar varios registros
     int insertFactura (List<FacturaVO> lista) throws SQLException;
     
-    // Método para borrar una persona
-    int deleteFactura (FacturaVO p) throws SQLException;
+    // Método para borrar una fcatura
+    int deleteFactura (int codigoUnico) throws SQLException;
     
     // Método para borrar toda la tabla
     int deleteFactura() throws SQLException;
     
-    // Método para modificar una persona. Se modifica a la persona que tenga esa 'pk'
-    // con los nuevos datos que traiga la persona 'nuevosDatos'
-    int updateFactura (int pk, FacturaVO nuevosDatos) throws SQLException;
+    // Método para modificar una fcatura. Se modifica la fcatura que tenga esa 'pk'
+    // con los nuevos datos que traiga la factura 'nuevosDatos'
+    FacturaVO updateFactura (int pk, FacturaVO nuevosDatos) throws SQLException;
 }
